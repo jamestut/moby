@@ -133,7 +133,7 @@ func TweakCapabilities(basics, adds, drops []string, privileged bool) ([]string,
 	switch {
 	case privileged:
 		// Privileged containers get all capabilities
-		return GetAllCapabilities(), nil
+		basics = GetAllCapabilities()
 	case len(adds) == 0 && len(drops) == 0:
 		// Nothing to tweak; we're done
 		return basics, nil
