@@ -141,6 +141,12 @@ func (container *Container) FromDisk() error {
 	}
 	defer jsonSource.Close()
 
+	// reset some settings, because json decoder doesn't clear out existing keys
+	// that doesn't exist in the json file.
+	for k := range container.MountPoints {
+		delete(container.MountPoints, k)
+	}
+
 	dec := json.NewDecoder(jsonSource)
 
 	// Load container settings
@@ -549,8 +555,8 @@ func (container *Container) StopTimeout() int {
 // See https://github.com/docker/docker/pull/17779
 // for a more detailed explanation on why we don't want that.
 func (container *Container) InitDNSHostConfig() {
-	container.Lock()
-	defer container.Unlock()
+	// container.Lock()
+	// defer container.Unlock()
 	if container.HostConfig.DNS == nil {
 		container.HostConfig.DNS = make([]string, 0)
 	}

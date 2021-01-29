@@ -116,6 +116,8 @@ func (daemon *Daemon) containerStart(container *container.Container, checkpoint 
 		return errdefs.Forbidden(errors.New("custom checkpointdir is not supported"))
 	}
 
+	container.FromDisk()
+
 	// if we encounter an error during start we need to ensure that any other
 	// setup has been cleaned up properly
 	defer func() {
